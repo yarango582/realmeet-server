@@ -5,5 +5,5 @@ import server from "./server/server";
 config();
 
 server.listen(process.env.PORT || 3000, () => {
-  console.log(`Server started`);
+  console.log(`Server started at ${process.env.PORT || 3000}`);
 });
