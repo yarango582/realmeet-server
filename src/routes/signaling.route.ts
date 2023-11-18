@@ -10,12 +10,18 @@
  */
 import { WebSocketServer } from 'ws';
 import { SignalingController } from '../controllers/signaling.controller';
+import { v4 as uuidv4 } from 'uuid'; // Asegúrate de instalar la librería 'uuid' para esto
 
 export const SignalingRoutes = (wss: WebSocketServer, controller: SignalingController): void => {
   wss.on('connection', (ws) => {
+    const uniqueID = uuidv4(); // Esta función necesita ser implementada para generar un ID único
+    console.log("cliente conectado");
+    (ws as any).id = uniqueID;
     ws.on('message', (message) => {
       const parsedMessage = JSON.parse(message.toString());
       const { type, roomId } = parsedMessage;
+
+      console.log("mensaje recibido", parsedMessage, type, roomId);
 
       switch (type) {
         case 'join':

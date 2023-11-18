@@ -19,9 +19,9 @@ export class Room {
     this.clients = this.clients.filter(c => c !== client);
   }
 
-  public broadcast(sender: WebSocket, data: string): void {
+  public broadcast(senderId: string, data: string): void {
     this.clients.forEach(client => {
-      if (client !== sender && client.readyState === WebSocket.OPEN) {
+      if ((client as any).id !== senderId && client.readyState === WebSocket.OPEN) {
         client.send(data);
       }
     });
@@ -30,4 +30,14 @@ export class Room {
   public getRoomId(): string {
     return this.roomId;
   }
+
+  public sendToClient(targetPeerId: string, data: string): void {
+    console.log("enviando mensaje a cliente", targetPeerId, data);
+    this.clients.forEach(client => {
+      if ((client as any).id === targetPeerId && client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
+    });
+  }
+
 }

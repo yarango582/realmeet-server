@@ -13,6 +13,7 @@ export class SignalingController {
 
   public handleJoin(ws: WebSocket, roomId: string): void {
     if (!this.rooms.has(roomId)) {
+      console.log("creando sala", roomId);
       this.rooms.set(roomId, new Room(roomId));
     }
     const room = this.rooms.get(roomId);
@@ -29,8 +30,26 @@ export class SignalingController {
     }
   }
 
-  public handleMessage(ws: WebSocket, roomId: string, message: string): void {
+  public handleMessage(ws: WebSocket, roomId: string, message: any): void {
     const room = this.rooms.get(roomId);
-    room?.broadcast(ws, message);
+    if (room) {
+      const target = message.target;
+      const sender = (ws as any).id; // Asignamos el ID en el momento de la conexión
+      console.log("enviando mensaje", target, sender, message);
+      switch (message.type) {
+        case 'offer':
+        case 'answer':
+          // Enviar oferta o respuesta al cliente específico
+          room.sendToClient(target, JSON.stringify(message));
+          break;
+        case 'candidate':
+          // Enviar candidatos ICE a todos en la sala excepto al remitente
+          room.broadcast(sender, JSON.stringify(message));
+          break;
+        // Aquí puedes manejar más casos de mensajes como 'leave' o 'disconnect'
+      }
+    } else {
+      ws.send(JSON.stringify({ error: 'Room not found or peer not found' }));
+    }
   }
 }
