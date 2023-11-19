@@ -1,9 +1,10 @@
-/* The code is importing the `AddressInfo` type from the `net` module and the `server` object from the
-`./server/server` file. */
-import { config } from "dotenv";
-import server from "./server/server";
-config();
+import { createConsoleLogger } from "./lib/logger";
+import { createServer } from "./websockets";
 
-server.listen(process.env.PORT || 3000, () => {
-  console.log(`Server started at ${process.env.PORT || 3000}`);
-});
+const PORT = 8080;
+
+const logger = createConsoleLogger();
+const server = createServer(logger);
+
+server.listen(PORT);
+logger.info(`Started listening on ${PORT}`);
