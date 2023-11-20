@@ -5,7 +5,7 @@ import {
   WebRtcAnswer,
   WebRtcIceCandidate,
   WebRtcOffer,
-} from "../../sdk/src/types/websockets";
+} from "realmeet.sdk";
 import { Logger } from "../lib/logger";
 import { Server, Socket } from "./types";
 
