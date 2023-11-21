@@ -1,6 +1,6 @@
-# @p2p.chat/signalling
+# Realmeet.app/signalling
 
-@p2p.chat/signalling is a simple nodejs websocket signalling server written in Typescript.
+realmeet.app/signalling is a simple nodejs websocket signalling server written in Typescript.
 
 ## Requirements
 
